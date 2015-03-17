@@ -1,12 +1,15 @@
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
-void le_alunos(int* matriculas,char* nomes, int* n){
+int le_alunos(int matriculas[],char nomes[][50])
+{
     int mat,i,linha;
     char c;
-    char nome[50]
-    FILE *f=fopen("alunos.txt","r");
+    char nome[50];
+    FILE *f = fopen("alunos.txt","r");
     linha=0;
-    while(feof(f) !=0){
+    while(feof(f) ==0){
             if(fscanf(f,"%d",&mat)==0){
                 break;
             }
@@ -15,7 +18,7 @@ void le_alunos(int* matriculas,char* nomes, int* n){
             while(c==' '){
                 c=fgetc(f);
             }
-            while(c!='\n'){
+            while(c!='\n' && c!=EOF){
               nome[i]=c;
               c=fgetc(f);
               i++  ;
@@ -25,23 +28,48 @@ void le_alunos(int* matriculas,char* nomes, int* n){
             strcpy(nomes[linha],nome);
             linha++;
     }
-    n=linha;
     fclose(f);
-    }
-
+    return linha;
 }
 
+void le_notas(float medianotas[], int numlinha)
+{
+
+    int mat,linhamedia=0;
+    float nota1,nota2,media;
+    FILE *f = fopen("notas.txt","r");
+    while(linhamedia<numlinha){
+            fscanf(f,"%d %f %f",&mat,&nota1,&nota2);
+            media=(nota1+nota2)/2;
+            medianotas[linhamedia]=media;
+            linhamedia++;
+    }
+    fclose(f);
 }
 
-/*int main (int argc, char **argv){
-    char *nome
-    if(argc>1){
-        nome=argv[1];
+void busca_imprime(float medianotas[],int numlinha,char nomes[][50]){
+    int i;
+    char name[50];
+    scanf("%s", &name);
+    i=0;
+    while(i<numlinha){
+       if(strstr(nomes[i],name)!=NULL){
+           printf("%s %f",nomes[i],medianotas[i]);
+       }
+    i++;
     }
-    printf("%s\n", nome);
-}*/
+}
 
-/*fopen/fclose
-fgetc/feof
-fscanf/strcmp*/
 
+
+main()
+{
+    char nomes[50][50];
+    int matriculas[50],numlinha;
+    float medianotas[50];
+
+
+    numlinha=le_alunos(matriculas,nomes);
+    le_notas(medianotas,numlinha);
+    busca_imprime(medianotas,numlinha,nomes);
+}
