@@ -54,7 +54,7 @@ void busca_imprime(float medianotas[],int numlinha,char nomes[][50]){
     i=0;
     while(i<numlinha){
        if(strstr(nomes[i],name)!=NULL){
-           printf("%s %f",nomes[i],medianotas[i]);
+           printf("%s %.2f\n",nomes[i],medianotas[i]);
        }
     i++;
     }
