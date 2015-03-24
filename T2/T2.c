@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-/* OK */
+
 int descobre_linhas()
 {
 
@@ -17,8 +17,7 @@ int descobre_linhas()
 }
 
 
-/* Falta ler o ultimo nome */
-void le_alunos(int* matriculas1,char nomes[][50],int numlinha)
+void le_alunos(int* matriculas1,char** nomes,int numlinha)
 {
     int mat,i,linha=0;
     char c;
@@ -40,13 +39,15 @@ void le_alunos(int* matriculas1,char nomes[][50],int numlinha)
             }
             nome[i]='\0';
             matriculas1[linha]=mat;
+            nomes[linha]=(char*)malloc((strlen(nome)+1)*sizeof(char));
             strcpy(nomes[linha],nome);
+
             if(linha!=numlinha) linha++;
     }
     fclose(f);
 }
 
-/* OK */
+
 void le_notas(int* matriculas2, float* medianotas, int numlinha)
 {
     int mat,linha=0;
@@ -62,7 +63,7 @@ void le_notas(int* matriculas2, float* medianotas, int numlinha)
     fclose(f);
 }
 
-void busca_imprime(int *matriculas1, int *matriculas2, float *medianotas,int numlinha,char nomes[][50]){
+void busca_imprime(int *matriculas1, int *matriculas2, float *medianotas,int numlinha,char **nomes){
     int i,j;
     char nomedigitado[50];
     scanf("%s",&nomedigitado);
@@ -81,45 +82,33 @@ void busca_imprime(int *matriculas1, int *matriculas2, float *medianotas,int num
 
 int main()
 {
-    int numlinha;
-    numlinha=descobre_linhas();
 
-    char nomes[numlinha][50];
+    int numlinha;
+    char **nomes;
     int *matriculas1,*matriculas2;
     float *medianotas;
+    int aux;
 
+    numlinha=descobre_linhas();
 
-
+    /* Aloca */
+    nomes=(char**)malloc(numlinha*sizeof(char*));
     matriculas1=(int*)malloc(numlinha*sizeof(int));
-    if (matriculas1==NULL)
-    {
-        printf("Memoria insuficiente.\n");
-        return 1;
-    }
-
     matriculas2=(int*)malloc(numlinha*sizeof(int));
-    if (matriculas2==NULL)
-    {
-        printf("Memoria insuficiente.\n");
-        return 1;
-    }
-
     medianotas=(float*)malloc(numlinha*sizeof(float));
-    if (medianotas==NULL)
-    {
-        printf("Memoria insuficiente.\n");
-        return 1;
-    }
 
 
-
-
+    /* Chama funções */
     le_alunos(matriculas1,nomes,numlinha);
     le_notas(matriculas2,medianotas,numlinha);
     busca_imprime(matriculas1,matriculas2,medianotas,numlinha,nomes);
 
 
-
+    /* Desaloca */
+    for(aux=0;aux<numlinha;aux++){
+    free(nomes[aux]);
+    }
+    free(nomes);
     free(matriculas1);
     free(matriculas2);
     free(medianotas);
