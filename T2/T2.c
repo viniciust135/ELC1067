@@ -63,10 +63,8 @@ void le_notas(int* matriculas2, float* medianotas, int numlinha)
     fclose(f);
 }
 
-void busca_imprime(int *matriculas1, int *matriculas2, float *medianotas,int numlinha,char **nomes){
+void busca_imprime(int *matriculas1, int *matriculas2, float *medianotas,int numlinha,char **nomes, char *nomedigitado){
     int i,j;
-    char nomedigitado[50];
-    scanf("%s",&nomedigitado);
     for(i=0;i<numlinha;i++){
        if(strstr(nomes[i],nomedigitado)!=NULL){
             for(j=0;j<numlinha;j++){
@@ -80,7 +78,7 @@ void busca_imprime(int *matriculas1, int *matriculas2, float *medianotas,int num
     }
 }
 
-int main()
+main(int argc, char *argv[])
 {
 
     int numlinha;
@@ -101,7 +99,7 @@ int main()
     /* Chama funções */
     le_alunos(matriculas1,nomes,numlinha);
     le_notas(matriculas2,medianotas,numlinha);
-    busca_imprime(matriculas1,matriculas2,medianotas,numlinha,nomes);
+    busca_imprime(matriculas1,matriculas2,medianotas,numlinha,nomes,argv[1]);
 
 
     /* Desaloca */
@@ -112,7 +110,4 @@ int main()
     free(matriculas1);
     free(matriculas2);
     free(medianotas);
-
-
-    return 0;
 }
