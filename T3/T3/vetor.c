@@ -35,57 +35,87 @@
 #include "memo.h"
 
 struct vetor {
-	/* TODO aqui */
-	/* defina os campos da TAD vetor aqui */
-
 	carta* baralho;   /* baralho - vetor de cartas */
 	int n;		/* número de cartas */
 };
 
+//DONE
 vetor_t* vetor_cria(void)
 {
 	struct vetor *vet = (struct vetor*)memo_aloca(sizeof(struct vetor));
 	vet->n = 0;
-	while(vet->n<20){
-        vet[vet->n]=NULL;
-        vet->n++;
-	}
+	int aux;
+	for(aux=0;aux<20;aux++){
+        vet->baralho[aux]=(carta*)malloc(sizeof(carta));
+    }
 	return vet;
 }
 
+//DONE
 void vetor_destroi(vetor_t* vet)
 {
-	memo_libera(vet->baralho);
 	memo_libera(vet);
 }
 
+//DONE
 int vetor_numelem(vetor_t *vet)
 {
-	/* TODO aqui */
 	return vet->n;
 }
 
+//DONE
 void vetor_insere_carta(vetor_t *vet, int indice, carta c)
 {
-	/* TODO aqui */
+    int max=20,i;
+	if(indice>max)
+    {
+        for(i=max;i<indice;i++){
+            vet->baralho[i]=(carta*)malloc(sizeof(carta));
+        }
+        max=indice;
+    }
+    vet->baralho[indice]=c;
 	vet->n++;
 }
 
+//DONE mas meio bugado...
 carta vetor_remove_carta(vetor_t *vet, int indice)
 {
-	/* TODO aqui */
-	vet->n--;
-	return NULL;
+    int i;
+
+	if(vet->baralho[indice]!=NULL)
+    {
+        for(i=indice;i<vet->n-1;i++)
+        {
+            vet->baralho[i]=vet->baralho[i+1];
+        }
+        vet->n--;
+        return vet->baralho[indice];
+    }
+
+    printf("Remocao falhou");
+    return NULL;
 }
 
+//DONE
 carta vetor_acessa_carta(vetor_t *vet, int indice)
 {
-	/* TODO aqui */
+    carta c=vet->baralho[indice];
+
+    if(c != NULL){
+        return c;
+    }
+
+    printf("Falha em acessar carta");
 	return NULL;
 }
 
+//DONE
 bool vetor_valido(vetor_t *vet)
 {
-	/* TODO aqui */
-	return false;
+	if (vet == NULL){
+		return false;
+	}
+
+	return true;
 }
